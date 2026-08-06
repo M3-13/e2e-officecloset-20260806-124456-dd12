@@ -53,6 +53,11 @@ class OutfitCreate(BaseModel):
     item_ids: list[int]
 
 
+class OutfitUpdate(BaseModel):
+    name: str | None = None
+    item_ids: list[int] | None = None
+
+
 class OutfitOut(BaseModel):
     id: int
     name: str
