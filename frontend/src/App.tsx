@@ -54,6 +54,14 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/outfits/:id/edit"
+          element={
+            <ProtectedRoute>
+              <OutfitCreatorPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );
