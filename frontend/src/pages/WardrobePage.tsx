@@ -176,7 +176,6 @@ function ConfirmDialog({
 export default function WardrobePage() {
   const [items, setItems] = useState<ItemOut[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState<ItemOut | null>(null);
@@ -196,7 +195,6 @@ export default function WardrobePage() {
     abortRef.current = controller;
 
     setLoading(true);
-    setError(null);
     try {
       const params = category ? `?category=${encodeURIComponent(category)}` : "";
       const data = await get<ItemOut[]>(`/wardrobe/items${params}`);
@@ -206,7 +204,7 @@ export default function WardrobePage() {
     } catch (err) {
       if (!controller.signal.aborted) {
         const msg = err instanceof Error ? err.message : "Fehler beim Laden der Garderobe";
-        setError(msg);
+        setToast({ message: msg, type: "error" });
       }
     } finally {
       if (!controller.signal.aborted) {
@@ -334,19 +332,6 @@ export default function WardrobePage() {
           <p style={{ color: "var(--color-fg_muted)", marginTop: "var(--space-2)" }}>
             Garderobe wird geladen...
           </p>
-        </div>
-      );
-    }
-
-    if (error) {
-      return (
-        <div className="wardrobe-empty">
-          <p style={{ color: "var(--color-error)", marginBottom: "var(--space-2)" }}>
-            {error}
-          </p>
-          <button className="btn-primary" onClick={() => fetchItems(selectedCategory)}>
-            Erneut versuchen
-          </button>
         </div>
       );
     }
